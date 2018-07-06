@@ -28,8 +28,6 @@ struct EvilVCA : Module {
 	enum OutputIds {
 		OUT1_OUTPUT,
 		OUT2_OUTPUT,
-		EXP1_OUTPUT,
-		EXP2_OUTPUT,
 		NUM_OUTPUTS
 	};
 EvilVCA() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
@@ -49,7 +47,7 @@ std::normal_distribution<double> distribution (0.0,0.002);
 //the amperstand is a reference parameter. this explains it pretty well. the names &in &level, etc are actually DEFINED here.
 //https://www.uow.edu.au/~lukes/TEXTBOOK/notes-cpp/functions/refparams.html
 
-static void stepChannel(Input &in, Param &level, Param &boost, Param &boostcliptype, Input &lin, Input &exp, Output &expout, Output &out) {
+static void stepChannel(Input &in, Param &level, Param &boost, Param &boostcliptype, Input &lin, Input &exp, Output &out) {
 
 const float PI = 3.1415927;
 float v = in.value;
@@ -100,13 +98,12 @@ if (boostcliptype.value == 1){
 	if (exp.active)
 	//this gives an exponetial response
 		v *= rescale(powf(expBase, clamp(exp.value / 10.0f, 0.0f, 1.0f)), 1.0f, expBase, 0.0f, 1.0f);
-expout.value = exp.value;
 		out.value = v;
 	}
 
 void EvilVCA::step() {
-	stepChannel(inputs[IN1_INPUT], params[LEVEL1_PARAM], params[BOOST_PARAM], params[BOOST_CLIPTYPE_PARAM], inputs[LIN1_INPUT], inputs[EXP1_INPUT], outputs[EXP1_OUTPUT], outputs[OUT1_OUTPUT]);
-	stepChannel(inputs[IN2_INPUT], params[LEVEL2_PARAM], params[BOOST_PARAM], params[BOOST_CLIPTYPE_PARAM], inputs[LIN2_INPUT], inputs[EXP2_INPUT], outputs[EXP2_OUTPUT], outputs[OUT2_OUTPUT]);
+	stepChannel(inputs[IN1_INPUT], params[LEVEL1_PARAM], params[BOOST_PARAM], params[BOOST_CLIPTYPE_PARAM], inputs[LIN1_INPUT], inputs[EXP1_INPUT], outputs[OUT1_OUTPUT]);
+	stepChannel(inputs[IN2_INPUT], params[LEVEL2_PARAM], params[BOOST_PARAM], params[BOOST_CLIPTYPE_PARAM], inputs[LIN2_INPUT], inputs[EXP2_INPUT], outputs[OUT2_OUTPUT]);
 }
 
 
@@ -139,8 +136,7 @@ EvilVCAWidget::EvilVCAWidget(EvilVCA *module) : ModuleWidget(module) {
 	addInput(Port::create<PJ301MPort>(Vec(54, 276), Port::INPUT, module, EvilVCA::LIN2_INPUT));
 	addInput(Port::create<PJ301MPort>(Vec(11, 320), Port::INPUT, module, EvilVCA::IN2_INPUT));
 
-	addOutput(Port::create<PJ301MPort>(Vec(31, 113), Port::OUTPUT, module, EvilVCA::EXP1_OUTPUT));
-	addOutput(Port::create<PJ301MPort>(Vec(31, 276), Port::OUTPUT, module, EvilVCA::EXP2_OUTPUT));
+
 
 	addOutput(Port::create<PJ301MPort>(Vec(54, 156), Port::OUTPUT, module, EvilVCA::OUT1_OUTPUT));
 	addOutput(Port::create<PJ301MPort>(Vec(54, 320), Port::OUTPUT, module, EvilVCA::OUT2_OUTPUT));
