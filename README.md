@@ -1,3 +1,3 @@
 # AmateurResearch
 
-These are just experiments...
+These are just experiments.
