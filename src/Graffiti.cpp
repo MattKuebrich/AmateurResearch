@@ -1,3 +1,5 @@
+// Experimenting with type
+
 #include "AmateurResearch.hpp"
 #include <iostream>
 #include "dsp/digital.hpp"
