@@ -7,11 +7,11 @@
 
 struct HalfWave : Module {
 	enum ParamIds {
-		PITCH_PARAM, RECT,
+		PITCH_PARAM, INVERT,
 		NUM_PARAMS
 	};
 	enum InputIds {
-		INPUT1,INPUT2,INPUT3,
+		INPUT1,INPUT2,INVERT_INPUT,
 		NUM_INPUTS
 	};
 	enum OutputIds {
@@ -24,10 +24,9 @@ struct HalfWave : Module {
 	};
 
 float phase = 1.0;
-float newout = 0;
-float newout2 = 0;
-float newout_rev = 0;
-float newout2_rev = 0;
+float out_top = 0;
+float out_bottom = 0;
+
 	HalfWave() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 	void step() override;
 
@@ -39,101 +38,64 @@ float newout2_rev = 0;
 
 
 
-
-
 void HalfWave::step() {
-//float sine = sinf(2.0f * M_PI * phase);
-	//outputs[OUTPUT1].value = 5.0f * sine;
 
-
-//halfwave rectifier thing?
-
-
-
-
-if (params[RECT].value == 0){
+if (params[INVERT].value == 1){
 	if (inputs[INPUT1].value < 0.5) {
-		newout = inputs[INPUT1].value;
+		out_top = inputs[INPUT1].value;
 	} else {
-	newout = 0;
+	out_top = 0;
 	}
 
 } else {
 	if (inputs[INPUT1].value > 0.5) {
-		newout = inputs[INPUT1].value;
+		out_top = inputs[INPUT1].value;
 	} else {
-	newout = 0;
+	out_top = 0;
 	}
 }
 
 
-if (params[RECT].value == 1){
+if (params[INVERT].value == 0){
 	if (inputs[INPUT2].value < 0.5) {
-		newout2 = inputs[INPUT2].value;
+		out_bottom = inputs[INPUT2].value;
 	} else {
-	newout2 = 0;
+	out_bottom = 0;
 	}
 
 } else {
 	if (inputs[INPUT2].value > 0.5) {
-		newout2 = inputs[INPUT2].value;
+		out_bottom = inputs[INPUT2].value;
 	} else {
-	newout2 = 0;
+	out_bottom = 0;
 	}
 }
 
-if (inputs[INPUT3].value < 0.5) {
-newout = newout *-1;
-newout2 = newout2 *-1;
+
+if (inputs[INVERT_INPUT].value < 0.5) {
+out_top = out_top *-1;
+out_bottom = out_bottom *-1;
 }
 
-
-
-outputs[OUTPUT1].value = newout + newout2;
-
-
-
-//this does a "mult"
-	//outputs[OUTPUT1].value = inputs[INPUT1].value;
-	//outputs[OUTPUT2].value = inputs[INPUT1].value;
-
-
-	//feeding the same thing into both will cancel them out!
-	//outputs[OUTPUT1].value = newout+newout2;
-	lights[BLINK_LIGHT].value = inputs[INPUT1].value/10; //since oscillators are usually dealing w/ 10 volts
-
-
+outputs[OUTPUT1].value = out_top + out_bottom; //this should be out_top + out_top2;
+lights[BLINK_LIGHT].value = inputs[INPUT1].value/10; //since oscillators are usually dealing w/ 10 volts
 
 }
 
 struct HalfWaveWidget : ModuleWidget {
 	HalfWaveWidget(HalfWave *module) : ModuleWidget(module) {
 		setPanel(SVG::load(assetPlugin(plugin, "res/HalfWave.svg")));
-
-//just the screws in the module
 		addChild(Widget::create<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
 		addChild(Widget::create<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
 		addChild(Widget::create<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(Widget::create<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-
-// the switch
-		addParam(ParamWidget::create<CKSS>(Vec(40, 320), module, HalfWave::RECT, 0.0f, 1.0f, 1.0f));
-
-		addParam(ParamWidget::create<Davies1900hBlackKnob>(Vec(28, 150), module, HalfWave::PITCH_PARAM, -3.0, 3.0, 0.0));
-//addInput(Port::create<PJ301MPort>(Vec(11, 276), Port::INPUT, module, VCO::PITCH_INPUT));
-
+		addParam(ParamWidget::create<CKSS>(Vec(40, 320), module, HalfWave::INVERT, 0.0f, 1.0f, 1.0f));
+		//addParam(ParamWidget::create<Davies1900hBlackKnob>(Vec(28, 150), module, HalfWave::PITCH_PARAM, -3.0, 3.0, 0.0));
 		addInput(Port::create<PJ301MPort>(Vec(33, 30), Port::INPUT, module, HalfWave::INPUT1));
 		addInput(Port::create<PJ301MPort>(Vec(33, 90), Port::INPUT, module, HalfWave::INPUT2));
-				addInput(Port::create<PJ301MPort>(Vec(60, 320), Port::INPUT, module, HalfWave::INPUT3));
+		addInput(Port::create<PJ301MPort>(Vec(60, 320), Port::INPUT, module, HalfWave::INVERT_INPUT));
 		addOutput(Port::create<PJ301MPort>(Vec(33, 250), Port::OUTPUT, module, HalfWave::OUTPUT1));
-//centering LED
 		addChild(ModuleLightWidget::create<MediumLight<RedLight>>(Vec((box.size.x-10)/2,200), module, HalfWave::BLINK_LIGHT));
-
-	//	addOutput(Port::create<PJ301MPort>(Vec(33, 200), Port::OUTPUT, module, HalfWave::OUTPUT2));
-	//	addOutput(Port::create<PJ301MPort>(Vec(33, 250), Port::OUTPUT, module, HalfWave::OUTPUT3));
-		//addChild(ModuleLightWidget::create<MediumLight<BlueLight>>(Vec(41, 59), module, HalfWave::BLINK_LIGHT2));
-		//addChild(ModuleLightWidget::create<MediumLight<RedLight>>(Vec(41, 49), module, HalfWave::BLINK_LIGHT));
-
 	}
 };
 
