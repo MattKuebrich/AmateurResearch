@@ -73,17 +73,11 @@ void Sign::step() {
 		//printf("%f\n",phase);
 
 
-
 	float sine = sin(2*M_PI*phase);
-	//float sine = sin(2*M_PI*(freq2 * phase));
+	float square = 4*(sin(2*M_PI*phase)+(sin(6*M_PI*phase))/3+(sin(10*M_PI*phase))/5+(sin(14*M_PI*phase))/7)/5; //square wave approximation
 
-	//launch rack via terminal to see these!
-	//printf("%s\n","phase is");
-	//printf("%f\n",sine);
-//printf("%s\n","aaasdafsadfoo!");
-
+	//outputs[SINE_OUTPUT].value = sine*5.0f; //boost voltage
 	outputs[SINE_OUTPUT].value = sine*5.0f; //boost voltage
-	//outputs[SINE_OUTPUT].value = params[PITCH_PARAM].value;
 
 }
 
