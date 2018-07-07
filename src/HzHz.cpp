@@ -25,8 +25,8 @@ float newout2 = 0;
 float newout3 = 0;
 int shifted = 0;
 int shifted2 = 0;
-float val = 0.0;
-
+float val1 = 0.0;
+float val2 = 0.0;
 	HzHz() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 	void step() override;
 };
@@ -38,19 +38,27 @@ float val = 0.0;
 
 void HzHz::step() {
 
-float crush = params[BITCRUSH_AMT].value;
-
-// was trying to make it shift bits one way when knob was turned halfway and shift the other way when turned the other half, but not working
-if (crush < 2.5){
-outputs[OUTPUT1].value = (int)inputs[INPUT1].value << int(crush);
-} else {
-
-//outputs[OUTPUT1].value = (int)inputs[INPUT1].value & int(crush);
+float crush = params[BITCRUSH_AMT].value; //this fades between the 2 crushes
 float x = inputs[INPUT1].value;
-val = 100*(x * x);
-outputs[OUTPUT1].value = clamp(val, -5.0f, 5.0f); //clamp output to 10vpp
-}
-}
+
+//val1 = int(x) << int(crush); //bitwise
+
+//knob all the way down
+val1 = 10*(x * x); //crazy crush  (you could put the same thing into the "formula module :/")
+val1 = clamp(val1, -5.0f, 5.0f); //clamp to 10vpp
+
+//knob all the way up
+val2 = 100*(x * x); //crazy crush
+val2 = clamp(val2, -5.0f, 5.0f); //clamp to 10vpp
+
+outputs[OUTPUT1].value = val1*(1 - crush) + val2*crush;  //as one value goes up, the other goes down
+
+
+} //end of step
+
+
+
+
 
 struct HzHzWidget : ModuleWidget {
 	HzHzWidget(HzHz *module) : ModuleWidget(module) {
@@ -63,7 +71,7 @@ struct HzHzWidget : ModuleWidget {
 		addChild(Widget::create<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 
-		addParam(ParamWidget::create<Davies1900hWhiteKnob>(Vec(36.683,201.583), module, HzHz::BITCRUSH_AMT, 0, 5, 0.0));
+		addParam(ParamWidget::create<Davies1900hWhiteKnob>(Vec(36.683,201.583), module, HzHz::BITCRUSH_AMT, 0, 1, 0.0));
 		addInput(Port::create<PJ301MPort>(Vec(33, 60), Port::INPUT, module, HzHz::INPUT1));
 		addOutput(Port::create<PJ301MPort>(Vec(33, 300), Port::OUTPUT, module, HzHz::OUTPUT1));
 
