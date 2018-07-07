@@ -1,5 +1,6 @@
-//right now this takes 2 input signals and takes the top half from one and the bottom half from the other.
-//it works but it's not that interesting... it sounds nearly the same as if they just went through a mixer
+// HALFWAVE
+// right now this takes 2 input signals and takes the top half from one and the bottom half from the other.
+// it works but it's not that interesting... it sounds nearly the same as if they just went through a mixer
 // the switch switches the order and the jack next to it sort of modulates it (just turns it ON or OFF)..
 
 #include "AmateurResearch.hpp"
