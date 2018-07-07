@@ -6,6 +6,7 @@
 
 #include "AmateurResearch.hpp"
 
+
 struct HalfWave : Module {
 	enum ParamIds {
 		PITCH_PARAM, INVERT,
