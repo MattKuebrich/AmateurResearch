@@ -25,6 +25,8 @@ float newout2 = 0;
 float newout3 = 0;
 int shifted = 0;
 int shifted2 = 0;
+float val = 0.0;
+
 	HzHz() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 	void step() override;
 };
@@ -42,9 +44,12 @@ float crush = params[BITCRUSH_AMT].value;
 if (crush < 2.5){
 outputs[OUTPUT1].value = (int)inputs[INPUT1].value << int(crush);
 } else {
-outputs[OUTPUT1].value = (int)inputs[INPUT1].value & int(crush);
-}
 
+//outputs[OUTPUT1].value = (int)inputs[INPUT1].value & int(crush);
+float x = inputs[INPUT1].value;
+val = 100*(x * x);
+outputs[OUTPUT1].value = clamp(val, -5.0f, 5.0f); //clamp output to 10vpp
+}
 }
 
 struct HzHzWidget : ModuleWidget {
