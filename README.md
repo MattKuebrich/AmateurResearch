@@ -1,3 +1,3 @@
 # AmateurResearch
 
-I don't really know what I'm doing!!
+These are just experiments.
