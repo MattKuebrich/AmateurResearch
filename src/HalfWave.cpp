@@ -28,6 +28,7 @@ float phase = 1.0;
 float out_top = 0;
 float out_bottom = 0;
 
+
 	HalfWave() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 	void step() override;
 
@@ -40,42 +41,37 @@ float out_bottom = 0;
 
 
 void HalfWave::step() {
-
-if (params[INVERT].value == 1){
-	if (inputs[INPUT1].value < 0.5) {
-		out_top = inputs[INPUT1].value;
-	} else {
-	out_top = 0;
-	}
-
-} else {
-	if (inputs[INPUT1].value > 0.5) {
-		out_top = inputs[INPUT1].value;
-	} else {
-	out_top = 0;
-	}
-}
-
+float halfer = inputs[INVERT_INPUT].value;
 
 if (params[INVERT].value == 0){
-	if (inputs[INPUT2].value < 0.5) {
+	if (inputs[INPUT1].value < halfer) {
+		out_top = inputs[INPUT1].value;
+	} else {
+	out_top = 0;
+	}
+
+} else {
+	if (inputs[INPUT1].value > halfer) {
+		out_top = inputs[INPUT1].value;
+	} else {
+	out_top = 0;
+	}
+}
+
+
+if (params[INVERT].value == 1){
+	if (inputs[INPUT2].value < halfer) {
 		out_bottom = inputs[INPUT2].value;
 	} else {
 	out_bottom = 0;
 	}
 
 } else {
-	if (inputs[INPUT2].value > 0.5) {
+	if (inputs[INPUT2].value > halfer) {
 		out_bottom = inputs[INPUT2].value;
 	} else {
 	out_bottom = 0;
 	}
-}
-
-
-if (inputs[INVERT_INPUT].value < 0.5) {
-out_top = out_top *-1;
-out_bottom = out_bottom *-1;
 }
 
 outputs[OUTPUT1].value = out_top + out_bottom; //this should be out_top + out_top2;
