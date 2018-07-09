@@ -1,3 +1,6 @@
+// EVIL VCA
+// VCA with added boost and clipping mode switch
+
 #include "AmateurResearch.hpp"
 //#include "dsp/decimator.hpp"
 #include <chrono>
