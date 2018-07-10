@@ -1,4 +1,4 @@
-// Experimenting with type
+// Experimenting with type 
 
 #include "AmateurResearch.hpp"
 #include <iostream>

@@ -1,3 +1,5 @@
+// Sine Wave Gen
+
 #include "AmateurResearch.hpp"
 #include <iostream>
 
