@@ -4,4 +4,6 @@
 /plugin.dll
 /plugin.so
 /experiments
+/src/Grafitti.cpp
+/src/Sign.cpp
 .DS_Store

@@ -11,5 +11,5 @@ extern Model *modelHalfWave;
 extern Model *modelRectify;
 extern Model *modelHzHz;
 extern Model *modelEvilVCA;
-extern Model *modelGraffiti;
-extern Model *modelSign;
+//extern Model *modelGraffiti;
+//extern Model *modelSign;
