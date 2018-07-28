@@ -14,6 +14,7 @@ void init(Plugin *p) {
 	p->addModel(modelRectify);
 	p->addModel(modelHzHz);
 	p->addModel(modelEvilVCA);
+	p->addModel(modelEvilMixer);
 	p->addModel(modelGraffiti);
-	p->addModel(modelSign);
+	//p->addModel(modelSign);
 }
