@@ -34,7 +34,10 @@ void EvilMixer::step() {
 	float in4 = inputs[IN4_INPUT].value * params[CH4_PARAM].value;
 
 	float out = in1 + in2 + in3 + in4;
-	outputs[OUT1_OUTPUT].value = out;
+
+
+
+outputs[OUT1_OUTPUT].value = out;
 
 
 }

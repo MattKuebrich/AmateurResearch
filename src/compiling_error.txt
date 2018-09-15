@@ -1,0 +1,5 @@
+In file included from /Users/mattkuebrich/Documents/Rack/plugins/AmateurResearch/src/Sign2.cpp:3:
+/Users/mattkuebrich/Documents/Rack/plugins/AmateurResearch/src/AmateurResearch.hpp:1:10: fatal error: 'rack.hpp' file not found
+#include "rack.hpp"
+         ^~~~~~~~~~
+1 error generated.

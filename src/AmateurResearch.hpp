@@ -13,8 +13,10 @@ extern Model *modelHzHz;
 extern Model *modelEvilVCA;
 extern Model *modelEvilMixer;
 extern Model *modelGraffiti;
-//extern Model *modelSign;
-
+extern Model *modelSign;
+extern Model *modelSign2;
+extern Model *modelGreb;
+extern Model *modelDelayThing;
 
 // Testing custom component
 struct MixerKnobWhite : SVGKnob {

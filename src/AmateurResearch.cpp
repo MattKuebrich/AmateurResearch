@@ -16,5 +16,8 @@ void init(Plugin *p) {
 	p->addModel(modelEvilVCA);
 	p->addModel(modelEvilMixer);
 	p->addModel(modelGraffiti);
-	//p->addModel(modelSign);
+	p->addModel(modelSign);
+	p->addModel(modelSign2);
+	p->addModel(modelGreb);
+	p->addModel(modelDelayThing);
 }
